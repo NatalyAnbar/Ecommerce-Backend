@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import mixins,GenericViewSet
-from . import models,serializer
+from . import models,Serializers
 
 class RegisterUser(GenericViewSet,mixins.CreateModelMixin):
     queryset = models.User.objects.all()
-    model = models.User
-    serializer_class = serializer.UserSerializer
+    serializer_class = Serializers.UserSerializer

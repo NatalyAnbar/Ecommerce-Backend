@@ -1,10 +1,20 @@
 from django.urls import path,include
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 from . import views
 
-router = DefaultRouter()
-router.register('carts',views.CartView)
+router = routers.DefaultRouter()
+router.register('carts',views.CartView,basename='cart')
+router.register('additems',views.AddItemView)
+
+cart_items_nested_router = routers.NestedDefaultRouter(
+    router,
+    'carts',
+    lookup = 'cart'
+)
+cart_items_nested_router.register('cartitems',views.CartItemView,basename='cartitems')
 
 urlpatterns = [
-    path('',include(router.urls))
+    path('',include(router.urls)),
+    path('',include(cart_items_nested_router.urls)),
+    path('mergeCart/',views.MergeCartView.as_view())
 ]
