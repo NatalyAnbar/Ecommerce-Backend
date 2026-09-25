@@ -4,16 +4,16 @@ from . import models,Serializers
 
 class CategoryView(ModelViewSet):
 
-    # Fetch all categories
-    queryset = models.Category.objects.all()
-    serializer_class = Serializers.CategorySerializer
+    # OPTIMIZED: Changed from slow N+1 queries to only 2 fast database queries
+    queryset = models.Category.objects.prefetch_related('products').all()
+    serializer_class = Serializers.CategorySerializergit
     lookup_field = 'slug'
 
 
 class ProductView(ModelViewSet):
 
-    # Fetch all products
-    queryset = models.Product.objects.all()
+    # OPTIMIZED: Changed from slow N+1 queries to only 2 fast database queries
+    queryset = models.Product.objects.prefetch_related('images').all()
     serializer_class = Serializers.ProductSerializer
     lookup_field = 'slug'
 
